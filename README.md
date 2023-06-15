@@ -1,5 +1,5 @@
 # sbox-mediahelpers
-A library used to retrieve media urls for the VideoPlayer class
+A library used to retrieve media urls for the VideoPlayer class in S&box
 
 ## How to use
 
