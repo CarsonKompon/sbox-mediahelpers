@@ -22,3 +22,7 @@ public void PlayVideo(string url)
   }
 }
 ```
+
+## Credit
+
+Based on YoutubeExplode: https://github.com/Tyrrrz/YoutubeExplode
