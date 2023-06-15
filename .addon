@@ -1,0 +1,23 @@
+{
+  "Title": "MediaHelpers",
+  "Type": "library",
+  "Org": "carsonk",
+  "Ident": "mediahelpers",
+  "Tags": "video media videoplayer",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "Resources": null,
+  "MenuResources": null,
+  "HasCode": true,
+  "CodePath": ".",
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Metadata": {
+    "ProjectTemplate": null,
+    "CsProjName": "",
+    "Summary": "A library for retrieving media urls for the VideoPlayer class",
+    "Description": "I\u0027ll write a description on how to use this in a bit",
+    "Public": true
+  }
+}
