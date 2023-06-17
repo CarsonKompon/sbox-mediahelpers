@@ -1,6 +1,10 @@
 # sbox-mediahelpers
 A library used to retrieve media urls for the VideoPlayer class in S&box
 
+## Helpful Information
+
+The Kick.com-related functions are currently not working as intended as they require a cloudflare bypass. I'm not sure I can natively build that in S&box so I am currently waiting for an official Kick.com API :)
+
 ## How to use
 
 1. Add the package to your game/addon:
