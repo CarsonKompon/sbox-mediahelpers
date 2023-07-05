@@ -51,11 +51,12 @@ public partial class YoutubePlayerResponse
             .GetPropertyOrNull("uploadDate")?
             .GetDateTimeOffset();
 
-    public TimeSpan? Duration => Details?
+    public TimeSpan Duration => Details?
             .GetPropertyOrNull("lengthSeconds")?
             .GetStringOrNull()?
             .ParseDoubleOrNull()?
-            .Pipe(TimeSpan.FromSeconds);
+            .Pipe(TimeSpan.FromSeconds)
+            ?? new TimeSpan();
 
     public IReadOnlyList<YoutubeThumbnailData> Thumbnails => Details?
             .GetPropertyOrNull("thumbnail")?
