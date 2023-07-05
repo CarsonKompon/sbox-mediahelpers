@@ -154,10 +154,7 @@ public partial class YoutubePlayerResponse
         Array.Empty<ClosedCaptionTrackData>();
 
     public YoutubePlayerResponse(JsonElement content) => _content = content;
-}
 
-partial class YoutubePlayerResponse
-{
     public class ClosedCaptionTrackData
     {
         private readonly JsonElement _content;
@@ -190,10 +187,7 @@ partial class YoutubePlayerResponse
 
         public ClosedCaptionTrackData(JsonElement content) => _content = content;
     }
-}
 
-partial class YoutubePlayerResponse
-{
     public class StreamData : IYoutubeStreamData
     {
         private readonly JsonElement _content;
@@ -285,11 +279,39 @@ partial class YoutubePlayerResponse
 
         public StreamData(JsonElement content) => _content = content;
     }
-}
 
-public partial class YoutubePlayerResponse
-{
     public static YoutubePlayerResponse Parse(string raw) => new(Json.Parse(raw));
+
+    public string GetStreamUrl()
+    {
+        // TODO: A way to specify the preferred quality
+        // Get the first format with VideoQualityLabel set to "1080p", and if none are found then "720p" and if none are found then "480p" and if none are found then the first
+        var streams = GetStreams();
+        var format = streams
+            .WhereNotNull()
+            .Where(f => f.VideoQualityLabel == "1080p" && f.AudioCodec != null)
+            .FirstOrDefault()
+            ?? streams
+                .WhereNotNull()
+                .Where(f => f.VideoQualityLabel == "720p" && f.AudioCodec != null)
+                .FirstOrDefault()
+                ?? streams
+                    .WhereNotNull()
+                    .Where(f => f.VideoQualityLabel == "480p" && f.AudioCodec != null)
+                    .FirstOrDefault()
+                    ?? streams
+                        .WhereNotNull()
+                        .Where(f => f.AudioCodec != null)
+                        .FirstOrDefault()
+                        ?? streams
+                            .WhereNotNull()
+                            .FirstOrDefault();
+        
+        if (format == null)
+            return null;
+
+        return format.Url;
+    }
 }
 
 
