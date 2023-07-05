@@ -57,7 +57,7 @@ public static class MediaHelper
         return await GetUrlFromYoutubeId(id);
     }
 
-    public static async Task<YoutubePlayerResponse> GetYoutubePlayerResponse(string videoId, CancellationToken cancellationToken = default)
+    private static async Task<YoutubePlayerResponse> GetYoutubePlayerResponse(string videoId, CancellationToken cancellationToken = default)
     {
         // Pretend we are an android... thanks YoutubeExplode :)
         HttpContent content = new StringContent(
