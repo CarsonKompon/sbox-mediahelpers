@@ -9,6 +9,9 @@ using MediaHelpers.Util.Extensions;
 
 namespace MediaHelpers;
 
+/// <summary>
+/// Represents the response from a YouTube player, containing details about the video and its available streams.
+/// </summary>
 public partial class YoutubePlayerResponse
 {
     private readonly JsonElement _content;
@@ -188,10 +191,16 @@ public partial class YoutubePlayerResponse
         public ClosedCaptionTrackData(JsonElement content) => _content = content;
     }
 
+    /// <summary>
+    /// Represents the data for a YouTube video stream.
+    /// </summary>
     public class StreamData : IYoutubeStreamData
     {
         private readonly JsonElement _content;
 
+        /// <summary>
+        /// The itag of the stream, which YouTube uses to identify various stream types.
+        /// </summary>
         public int? Itag => _content
                 .GetPropertyOrNull("itag")?
                 .GetInt32OrNull();
@@ -206,26 +215,40 @@ public partial class YoutubePlayerResponse
                 .GetStringOrNull()?
                 .Pipe(UrlEx.GetQueryParameters);
 
+        /// <summary>
+        /// The URL of the stream.
+        /// </summary>
         public string? Url => _content
                 .GetPropertyOrNull("url")?
                 .GetStringOrNull() ??
 
             CipherData?.GetValueOrDefault("url");
 
+        /// <summary>
+        /// The signature of the stream, used for secure identification.
+        /// </summary>
         public string? Signature => CipherData?.GetValueOrDefault("s");
 
+        /// <summary>
+        /// The parameter for the stream's signature.
+        /// </summary>
         public string? SignatureParameter => CipherData?.GetValueOrDefault("sp");
 
+        /// <summary>
+        /// The length of the stream's content.
+        /// </summary>
         public long? ContentLength => _content
                 .GetPropertyOrNull("contentLength")?
                 .GetStringOrNull()?
                 .ParseLongOrNull() ??
-
             Url?
                 .Pipe(s => UrlEx.TryGetQueryParameterValue(s, "clen"))?
                 .NullIfWhiteSpace()?
                 .ParseLongOrNull();
 
+        /// <summary>
+        /// The bitrate of the stream.
+        /// </summary>
         public long? Bitrate => _content
                 .GetPropertyOrNull("bitrate")?
                 .GetInt64OrNull();
@@ -234,6 +257,9 @@ public partial class YoutubePlayerResponse
                 .GetPropertyOrNull("mimeType")?
                 .GetStringOrNull();
 
+        /// <summary>
+        /// The container format of the stream.
+        /// </summary>
         public string? Container => MimeType?
                 .SubstringUntil(";")
                 .SubstringAfter("/");
@@ -244,6 +270,9 @@ public partial class YoutubePlayerResponse
                 .SubstringAfter("codecs=\"")
                 .SubstringUntil("\"");
 
+        /// <summary>
+        /// The audio codec used by the stream.
+        /// </summary>
         public string? AudioCodec => IsAudioOnly
                 ? Codecs
                 : Codecs?.SubstringAfter(", ").NullIfWhiteSpace();
@@ -261,18 +290,30 @@ public partial class YoutubePlayerResponse
             return codec;
         }
 
+        /// <summary>
+        /// The video quality label of the stream.
+        /// </summary>
         public string? VideoQualityLabel => _content
                 .GetPropertyOrNull("qualityLabel")?
                 .GetStringOrNull();
 
+        /// <summary>
+        /// The width of the video in the stream.
+        /// </summary>
         public int? VideoWidth => _content
                 .GetPropertyOrNull("width")?
                 .GetInt32OrNull();
 
+        /// <summary>
+        /// The height of the video in the stream.
+        /// </summary>
         public int? VideoHeight => _content
                 .GetPropertyOrNull("height")?
                 .GetInt32OrNull();
 
+        /// <summary>
+        /// The framerate of the video in the stream.
+        /// </summary>
         public int? VideoFramerate => _content
                 .GetPropertyOrNull("fps")?
                 .GetInt32OrNull();
@@ -315,42 +356,93 @@ public partial class YoutubePlayerResponse
 }
 
 
+ /// <summary>
+/// Represents the data for a YouTube video's thumbnail.
+/// </summary>
 public class YoutubeThumbnailData
 {
     private readonly JsonElement _content;
 
     public YoutubeThumbnailData(JsonElement content) => _content = content;
 
+    /// <summary>
+    /// The URL of the thumbnail.
+    /// </summary>
     public string? Url => _content.GetPropertyOrNull("url")?.GetStringOrNull();
 
+    /// <summary>
+    /// The width of the thumbnail.
+    /// </summary>
     public int? Width => _content.GetPropertyOrNull("width")?.GetInt32OrNull();
 
+    /// <summary>
+    /// The height of the thumbnail.
+    /// </summary>
     public int? Height => _content.GetPropertyOrNull("height")?.GetInt32OrNull();
 }
 
+/// <summary>
+/// Represents the data expected from a YouTube stream.
+/// </summary>
 public interface IYoutubeStreamData
 {
+    /// <summary>
+    /// The itag of the stream, which YouTube uses to identify various stream types.
+    /// </summary>
     int? Itag { get; }
 
+    /// <summary>
+    /// The URL of the stream.
+    /// </summary>
     string? Url { get; }
 
+    /// <summary>
+    /// The signature of the stream, used for secure identification.
+    /// </summary>
     string? Signature { get; }
 
+    /// <summary>
+    /// The parameter for the stream's signature.
+    /// </summary>
     string? SignatureParameter { get; }
 
+    /// <summary>
+    /// The length of the stream's content.
+    /// </summary>
     long? ContentLength { get; }
 
+    /// <summary>
+    /// The bitrate of the stream.
+    /// </summary>
     long? Bitrate { get; }
 
+    /// <summary>
+    /// The container format of the stream.
+    /// </summary>
     string? Container { get; }
 
+    /// <summary>
+    /// The audio codec used by the stream.
+    /// </summary>
     string? AudioCodec { get; }
 
+    /// <summary>
+    /// The video quality label of the stream.
+    /// </summary>
     string? VideoQualityLabel { get; }
 
+    /// <summary>
+    /// The width of the video in the stream.
+    /// </summary>
     int? VideoWidth { get; }
 
+    /// <summary>
+    /// The height of the video in the stream.
+    /// </summary>
     int? VideoHeight { get; }
 
+    /// <summary>
+    /// The framerate of the video in the stream.
+    /// </summary>
     int? VideoFramerate { get; }
 }
