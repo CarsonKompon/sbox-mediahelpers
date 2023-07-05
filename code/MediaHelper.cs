@@ -31,6 +31,17 @@ public static class MediaHelper
         return v;
     }
 
+    public static async Task<YoutubePlayerResponse> GetYoutubePlayerResponseFromId(string id)
+    {
+        return await GetYoutubePlayerResponse(id);
+    }
+
+    public static async Task<YoutubePlayerResponse> GetYoutubePlayerResponseFromUrl(string url)
+    {
+        string id = GetIdFromYoutubeUrl(url);
+        return await GetYoutubePlayerResponse(id);
+    }
+
     public static async Task<string> GetUrlFromYoutubeId(string id)
     {
         YoutubePlayerResponse response = await GetYoutubePlayerResponse(id);
