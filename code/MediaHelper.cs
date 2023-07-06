@@ -17,8 +17,8 @@ public static class MediaHelper
     {
         if(url.StartsWith("https://www.youtube.com/watch?v=")) return true;
         if(url.StartsWith("http://www.youtube.com/watch?v=")) return true;
-        if(url.StartsWith("https://youtube.com/shorts/")) return true;
-        if(url.StartsWith("http://youtube.com/shorts/")) return true;
+        if(url.StartsWith("https://www.youtube.com/shorts/")) return true;
+        if(url.StartsWith("http://www.youtube.com/shorts/")) return true;
         if(url.StartsWith("https://youtu.be/")) return true;
         if(url.StartsWith("http://youtu.be/")) return true;
         return false;
