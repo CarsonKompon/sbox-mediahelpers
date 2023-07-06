@@ -17,6 +17,8 @@ public static class MediaHelper
     {
         if(url.StartsWith("https://www.youtube.com/watch?v=")) return true;
         if(url.StartsWith("http://www.youtube.com/watch?v=")) return true;
+        if(url.StartsWith("https://youtube.com/shorts/")) return true;
+        if(url.StartsWith("http://youtube.com/shorts/")) return true;
         if(url.StartsWith("https://youtu.be/")) return true;
         if(url.StartsWith("http://youtu.be/")) return true;
         return false;
@@ -25,6 +27,14 @@ public static class MediaHelper
     public static string GetIdFromYoutubeUrl(string url)
     {
         var uri = new Uri(url);
+
+        if(url.Contains("youtu.be/") || url.Contains("/shorts/"))
+        {
+            return uri.Segments.Last();
+        }
+
+
+
         var query = uri.Query;
         var queryDict = System.Web.HttpUtility.ParseQueryString(query);
         var v = queryDict.Get("v");
