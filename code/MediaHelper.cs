@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sandbox;
 using MediaHelpers.Util.Extensions;
+using SoundCloudExplode;
 
 namespace MediaHelpers;
 
@@ -24,6 +25,13 @@ public static class MediaHelper
         return false;
     }
 
+    public static bool IsSoundcloudUrl(string url)
+    {
+        if(url == "https://soundcloud.com/discover") return false;
+        if(url.StartsWith("https://soundcloud.com/")) return true;
+        return false;
+    }
+
     public static string GetIdFromYoutubeUrl(string url)
     {
         var uri = new Uri(url);
@@ -39,6 +47,13 @@ public static class MediaHelper
         var queryDict = System.Web.HttpUtility.ParseQueryString(query);
         var v = queryDict.Get("v");
         return v;
+    }
+
+    public static async void GetSoundcloudTrackFromUrl(string url)
+    {
+        if(!IsSoundcloudUrl(url)) return;
+        var soundcloud = new SoundCloudClient();
+        var track = await soundcloud.Tracks.GetAsync(url);
     }
 
     public static async Task<YoutubePlayerResponse> GetYoutubePlayerResponseFromId(string id)
