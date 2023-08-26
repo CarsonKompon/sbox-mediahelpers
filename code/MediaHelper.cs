@@ -94,7 +94,7 @@ public static class MediaHelper
             {"User-Agent", "com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip"}
         };
 
-        var response = await Http.RequestAsync("POST", YOUTUBE_PLAYER, content);
+        var response = await Http.RequestAsync(YOUTUBE_PLAYER, "POST", content);
 
         var playerResponse = YoutubePlayerResponse.Parse(
             await response.Content.ReadAsStringAsync(cancellationToken)
